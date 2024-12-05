@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.todolist.databinding.FragmentNotificationsBinding;
+import  com.devmobile.todolistBertaudLeroi.databinding.FragmentNotificationsBinding;
 
 public class NotificationsFragment extends Fragment {
 

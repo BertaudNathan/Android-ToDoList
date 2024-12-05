@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.todolist.databinding.FragmentHomeBinding;
+import com.devmobile.todolistBertaudLeroi.databinding.FragmentHomeBinding;
 
 public class HomeFragment extends Fragment {
 
