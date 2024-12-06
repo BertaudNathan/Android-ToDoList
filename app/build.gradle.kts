@@ -47,6 +47,7 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation(libs.annotation)
     implementation(libs.activity)
+    implementation(libs.preference)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -65,5 +66,5 @@ dependencies {
     // For example, add the dependencies for Firebase Authentication and Cloud Firestore
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
-    implementation(libs.recyclerview.swipedecorator)
+    implementation (libs.recyclerview.swipedecorator)
 }

@@ -33,6 +33,11 @@ public class FirebaseService {
 
     }
 
+    public boolean logOut(){
+        mAuth.signOut();
+        return true;
+    }
+
     public boolean tryLogIn(String email,String password){
         final boolean result = false;
         Task task = mAuth.signInWithEmailAndPassword(email, password);
