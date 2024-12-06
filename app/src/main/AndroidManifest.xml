@@ -16,21 +16,26 @@
             android:name="com.example.todolist.SplashScreen"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.LoginRegisterActivity" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- RegisterActivity n’a plus le MAIN/LAUNCHER -->
         <activity
-            android:name="com.example.todolist.RegisterActivity"
+            android:name="com.example.todolist.LoginRegisterActivity"
             android:exported="true">
-        </activity>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name="com.example.todolist.MainActivity"
             android:exported="false"
-            android:label="@string/app_name"/>
+            android:label="@string/app_name">
+
+        </activity>
     </application>
 
 </manifest>
