@@ -1,5 +1,15 @@
 package com.example.todolist;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import android.os.Bundle;
+import android.view.MenuItem;
+
+import com.devmobile.todolistBertaudLeroi.R;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -44,6 +54,10 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
     private List<ToDoModel> mList;
     private ToDoAdapter adapter;
 
+    public DrawerLayout drawerLayout;
+    public ActionBarDrawerToggle actionBarDrawerToggle;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,15 +65,17 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(binding.navView, navController);
+
+        drawerLayout = findViewById(R.id.my_drawer_layout);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
+
+        // pass the Open and Close toggle for the drawer layout listener
+        // to toggle the button
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+
+        // to make the Navigation drawer icon always appear on the action bar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         FirebaseService firebaseService = new FirebaseService(this);
         FirebaseUser user = firebaseService.getCurrentUser();
 
@@ -86,11 +102,28 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new RecyclerViewTouchHelper(adapter));
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
+        binding.sidenavbar.setNavigationItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.nav_account) {
+                IntentOpenerService.OpenMainActivity(this, false);
+            }
+            if (item.getItemId() == R.id.nav_settings) {
+                IntentOpenerService.OpenPreferenceActivity(this, false);
+            }
+
+            if (item.getItemId() == R.id.nav_logout) {
+                firebaseService.logOut();
+                this.recreate();
+            }
+            return true;
+        });
+
+
+
         if (user == null) {
-            IntentOpenerService.OpenLoginActivity(this,true);
+            IntentOpenerService.OpenLoginActivity(this, true);
             return;
         }
-        Toast.makeText(this,"Vous etes connecté en tant que "+user.getEmail(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Vous etes connecté en tant que " + user.getEmail(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -99,5 +132,14 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
         Collections.reverse(mList);
         adapter.setTasks(mList);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

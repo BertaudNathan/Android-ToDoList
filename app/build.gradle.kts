@@ -67,4 +67,5 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
     implementation (libs.recyclerview.swipedecorator)
+    implementation(libs.material.v130alpha03)
 }
