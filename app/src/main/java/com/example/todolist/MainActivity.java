@@ -1,8 +1,12 @@
 package com.example.todolist;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.devmobile.todolistBertaudLeroi.R;
+import com.example.todolist.ui.LogReg.RegisterFragment;
+import com.example.todolist.services.FirebaseService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +16,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.devmobile.todolistBertaudLeroi.databinding.ActivityMainBinding;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +38,15 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+        FirebaseService firebaseService = new FirebaseService(this);
+        FirebaseUser user = firebaseService.getCurrentUser();
+
+        if (user == null) {
+            Intent intent = new Intent(this, RegisterFragment.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); //on enleve le register de la back stack
+            startActivity(intent);
+        }
+        Toast.makeText(this,"Vous etes connecté en tant que "+user.getEmail(),Toast.LENGTH_SHORT).show();
     }
 
 }
