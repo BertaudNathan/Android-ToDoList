@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.devmobile.todolistBertaudLeroi.R;
+import com.example.todolist.services.IntentOpenerService;
 import com.example.todolist.ui.LogReg.RegisterFragment;
 import com.example.todolist.services.FirebaseService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -42,9 +43,8 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser user = firebaseService.getCurrentUser();
 
         if (user == null) {
-            Intent intent = new Intent(this, RegisterFragment.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); //on enleve le register de la back stack
-            startActivity(intent);
+            IntentOpenerService.OpenLoginActivity(this,true);
+            return;
         }
         Toast.makeText(this,"Vous etes connecté en tant que "+user.getEmail(),Toast.LENGTH_SHORT).show();
     }

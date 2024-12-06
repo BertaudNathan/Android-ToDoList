@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.devmobile.todolistBertaudLeroi.databinding.FragmentHomeBinding;
+import com.example.todolist.services.IntentOpenerService;
 
 public class HomeFragment extends Fragment {
 
@@ -26,6 +27,12 @@ public class HomeFragment extends Fragment {
 
         final TextView textView = binding.textHome;
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        binding.buttonOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                IntentOpenerService.OpenPreferenceActivity(getContext(),false);
+            }
+        });
         return root;
     }
 
