@@ -32,7 +32,5 @@ public class LoginRegisterActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_logReg);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navViewLogReg, navController);
-
-        Toast.makeText(this,"ta gueule", Toast.LENGTH_LONG).show();
     }
 }

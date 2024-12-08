@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,7 @@ import androidx.annotation.Nullable;
 import com.devmobile.todolistBertaudLeroi.R;
 import com.example.todolist.Model.ToDoModel;
 import com.example.todolist.Utils.DataBaseHelper;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.example.todolist.services.FirebaseService;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class AddNewTask extends BottomSheetDialogFragment {
@@ -89,14 +90,19 @@ public class AddNewTask extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 String text = mEditText.getText().toString();
+                FirebaseService fbs = new FirebaseService(getContext());
                 if(finalIsUpdate) {
-                    myDB.updateTask(bundle.getInt("ID"), text);
+                    Log.d(TAG, "onClick: ");
+                    fbs.updateTask(fbs.getTask(bundle.getString("ID")),text);
                 } else {
-                    ToDoModel item = new ToDoModel();
+                    ToDoModel item = new ToDoModel(text,fbs.getCurrentUser().getEmail(), 0,0);
                     item.setTask(text);
                     item.setStatus(0);
                     myDB.insertTask(item);
+                    fbs.addTask(item);
                 }
+
+
                 dismiss();
             }
         });

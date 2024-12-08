@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
     FloatingActionButton addButton;
     DataBaseHelper myDB;
 
-    private List<ToDoModel> mList;
+    private List mList;
     private ToDoAdapter adapter;
 
     public DrawerLayout drawerLayout;
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-        mList = myDB.getAllTasks();
+        mList = firebaseService.getAllTasks();
         Collections.reverse(mList);
         adapter.setTasks(mList);
 

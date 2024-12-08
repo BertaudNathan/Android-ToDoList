@@ -2,6 +2,7 @@ package com.example.todolist.Adapter;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,7 +86,8 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
     public void editItems(int position) {
         ToDoModel item = mList.get(position);
         Bundle bundle = new Bundle();
-        bundle.putInt("Id", item.getId());
+        bundle.putString("Id", item.getUuid());
+        Log.d("edfefe", bundle.getString("Id","rien"));
         bundle.putString("task", item.getTask());
 
         AddNewTask task = new AddNewTask();

@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "994760574000",
+    "firebase_url": "https://android-todolist-8a859-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "android-todolist-8a859",
     "storage_bucket": "android-todolist-8a859.firebasestorage.app"
   },

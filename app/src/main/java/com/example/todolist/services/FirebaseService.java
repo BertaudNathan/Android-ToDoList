@@ -1,25 +1,19 @@
 package com.example.todolist.services;
 
-import static android.content.ContentValues.TAG;
-
-import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.example.todolist.Model.ToDoModel;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthEmailException;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.concurrent.Executor;
+import java.util.List;
 
 public class FirebaseService {
 
@@ -31,6 +25,24 @@ public class FirebaseService {
         this.mAuth = FirebaseAuth.getInstance();
         this.context = ctx;
 
+    }
+
+    public ToDoModel getTask(String id){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        ToDoModel task = database.getReference("tasks").child(id).get().getResult().getValue(ToDoModel.class);
+        return task;
+    }
+
+    public boolean addTask(ToDoModel task){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        database.getReference("tasks").child(task.getUuid()).setValue(task);
+        return true;
+    }
+
+    public boolean updateTask(ToDoModel task,String newText){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        database.getReference("tasks").child(task.getUuid()).child("task").setValue(newText);
+        return true;
     }
 
     public boolean logOut(){
@@ -83,6 +95,12 @@ public class FirebaseService {
             }
         }
         return false;
+    }
+
+    public List getAllTasks() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        List tasks = database.getReference("tasks").get().getResult().getValue(List.class);
+        return tasks;
     }
 }
 

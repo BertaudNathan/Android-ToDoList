@@ -68,4 +68,5 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation (libs.recyclerview.swipedecorator)
     implementation(libs.material.v130alpha03)
+    implementation(libs.firebase.database)
 }
