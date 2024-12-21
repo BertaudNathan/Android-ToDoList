@@ -59,8 +59,8 @@ public class ToDoModel {
         this.id = id;
         this.status = status;
         this.userEmail = userEmail;
-        Log.d("UUID",uuid);
         this.uuid = UUID.randomUUID().toString();
+        Log.d("UUID",uuid);
     }
 
 

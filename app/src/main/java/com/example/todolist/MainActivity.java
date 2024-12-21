@@ -79,6 +79,11 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
         FirebaseService firebaseService = new FirebaseService(this);
         FirebaseUser user = firebaseService.getCurrentUser();
 
+        if (user == null) {
+            IntentOpenerService.OpenLoginActivity(this, true);
+            return;
+        }
+
         recyclerView = findViewById(R.id.recyclerView);
         addButton = findViewById(R.id.addButton);
         myDB = new DataBaseHelper(MainActivity.this);
@@ -88,9 +93,22 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-        mList = firebaseService.getAllTasks();
-        Collections.reverse(mList);
-        adapter.setTasks(mList);
+        firebaseService.getTasksForCurrentUser(new FirebaseService.ToDoCallback() {
+            @Override
+            public void onSuccess(List<ToDoModel> tasks) {
+                for (ToDoModel task : tasks) {
+                    mList.add(task);
+                }
+                Collections.reverse(mList);
+                adapter.setTasks(mList);
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                System.err.println("Error: " + errorMessage);
+            }
+        });
+
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,13 +134,6 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
             }
             return true;
         });
-
-
-
-        if (user == null) {
-            IntentOpenerService.OpenLoginActivity(this, true);
-            return;
-        }
         Toast.makeText(this, "Vous etes connecté en tant que " + user.getEmail(), Toast.LENGTH_SHORT).show();
     }
 

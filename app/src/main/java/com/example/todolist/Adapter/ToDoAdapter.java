@@ -17,6 +17,7 @@ import com.example.todolist.AddNewTask;
 import com.example.todolist.MainActivity;
 import com.example.todolist.Model.ToDoModel;
 import com.example.todolist.Utils.DataBaseHelper;
+import com.example.todolist.services.FirebaseService;
 
 import java.util.List;
 
@@ -67,7 +68,10 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
 
     @Override
     public int getItemCount() {
-        return mList.size();
+        if (mList != null) {
+            return mList.size();
+        }
+        return 0;
     }
 
     public void setTasks(List<ToDoModel> mList) {
@@ -77,7 +81,10 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
 
     public void deleteTasks(int position) {
         ToDoModel item = mList.get(position);
-        myDB.deleteTask(item.getId());
+        //myDB.deleteTask(item.getId());
+        FirebaseService firebaseService = new FirebaseService(activity);
+        firebaseService.deleteTask(item);
+
 
         mList.remove(position);
         notifyItemRemoved(position);
