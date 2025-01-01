@@ -11,10 +11,11 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.devmobile.todolistBertaudLeroi.R;
 import com.devmobile.todolistBertaudLeroi.databinding.ActivityLoginRegisterBinding;
+import com.example.todolist.Model.MyCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
-public class LoginRegisterActivity extends AppCompatActivity {
+public class LoginRegisterActivity extends MyCompatActivity {
     private ActivityLoginRegisterBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

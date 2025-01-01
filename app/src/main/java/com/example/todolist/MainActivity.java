@@ -1,10 +1,12 @@
 package com.example.todolist;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -15,6 +17,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+
+import com.example.todolist.Model.MyCompatActivity;
 
 import com.devmobile.todolistBertaudLeroi.R;
 import com.example.todolist.Adapter.ToDoAdapter;
@@ -42,7 +46,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements OnDialogCloseListener {
+public class MainActivity extends MyCompatActivity implements OnDialogCloseListener {
 
     private ActivityMainBinding binding;
 
@@ -73,6 +77,9 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
         // to toggle the button
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
+
+
+
 
         // to make the Navigation drawer icon always appear on the action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
