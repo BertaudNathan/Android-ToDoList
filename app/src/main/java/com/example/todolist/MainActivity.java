@@ -18,7 +18,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.todolist.Model.MyCompatActivity;
+import com.example.todolist.Model.BackConfirmActivity;
 
 import com.devmobile.todolistBertaudLeroi.R;
 import com.example.todolist.Adapter.ToDoAdapter;
@@ -46,7 +46,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends MyCompatActivity implements OnDialogCloseListener {
+public class MainActivity extends BackConfirmActivity implements OnDialogCloseListener {
 
     private ActivityMainBinding binding;
 

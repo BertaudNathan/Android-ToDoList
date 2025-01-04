@@ -7,11 +7,15 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+
+import com.example.todolist.Model.MyCompatActivity;
 import com.example.todolist.services.FirebaseService;
 import com.example.todolist.services.IntentOpenerService;
 import com.devmobile.todolistBertaudLeroi.R;
 
-public class PreferenceActivity extends AppCompatActivity {
+public class PreferenceActivity extends MyCompatActivity {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,10 @@ public class PreferenceActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+
+
+
 
     }
 

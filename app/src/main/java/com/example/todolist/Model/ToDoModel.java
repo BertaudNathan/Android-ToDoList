@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class ToDoModel {
 
-    private String task,userEmail,uuid;
+    private String task,date,userEmail,uuid;
     private int id, status;
 
     public String getTask() {
@@ -50,12 +50,21 @@ public class ToDoModel {
         this.uuid = uuid;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public ToDoModel() {
 
     }
 
     public ToDoModel(String task,String userEmail ,int id, int status) {
         this.task = task;
+        this.date = null;
         this.id = id;
         this.status = status;
         this.userEmail = userEmail;
@@ -63,5 +72,13 @@ public class ToDoModel {
         Log.d("UUID",uuid);
     }
 
-
+    public ToDoModel(String task,String date,String userEmail ,int id, int status) {
+        this.task = task;
+        this.date = date;
+        this.id = id;
+        this.status = status;
+        this.userEmail = userEmail;
+        this.uuid = UUID.randomUUID().toString();
+        Log.d("UUID",uuid);
+    }
 }

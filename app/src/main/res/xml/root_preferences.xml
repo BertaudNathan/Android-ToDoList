@@ -11,7 +11,7 @@
             app:defaultValue="Theme"
             app:entries="@array/Theme_entries"
             app:entryValues="@array/Theme_values"
-            app:key="reply"
+            app:key="Theme"
             app:title="Theme of the app"
             app:useSimpleSummaryProvider="true" />
 

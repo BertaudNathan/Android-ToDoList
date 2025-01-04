@@ -1,6 +1,7 @@
 package com.example.todolist;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +23,7 @@ import com.devmobile.todolistBertaudLeroi.R;
 import com.example.todolist.Model.ToDoModel;
 import com.example.todolist.Utils.DataBaseHelper;
 import com.example.todolist.services.FirebaseService;
+import com.example.todolist.ui.Modale.CustomCalendarDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class AddNewTask extends BottomSheetDialogFragment {
@@ -28,6 +32,8 @@ public class AddNewTask extends BottomSheetDialogFragment {
 
     private EditText mEditText;
     private Button mSaveButton;
+    private Button buttonCalendar;
+    private TextView textViewDate;
 
     private DataBaseHelper myDB;
 
@@ -48,6 +54,8 @@ public class AddNewTask extends BottomSheetDialogFragment {
 
         mEditText= view.findViewById(R.id.editText);
         mSaveButton = view.findViewById(R.id.addButton);
+        buttonCalendar = view.findViewById(R.id.buttonCalendar);
+        textViewDate = view.findViewById(R.id.textViewDate);
 
         myDB = new DataBaseHelper(getActivity());
 
@@ -95,15 +103,37 @@ public class AddNewTask extends BottomSheetDialogFragment {
                     Log.d(TAG, "onClick: ");
                     fbs.updateTask(fbs.getTask(bundle.getString("ID")),text);
                 } else {
-                    ToDoModel item = new ToDoModel(text,fbs.getCurrentUser().getEmail(), 0,0);
-                    item.setTask(text);
-                    item.setStatus(0);
+                    ToDoModel item;
+                    if (textViewDate.getText().toString().isEmpty()){
+                        item = new ToDoModel(text,fbs.getCurrentUser().getEmail(), 0,0);
+                    } else{
+                        item = new ToDoModel(text,textViewDate.getText().toString(),fbs.getCurrentUser().getEmail(), 0,0);
+                    }
                     myDB.insertTask(item);
                     fbs.addTask(item);
                 }
 
 
                 dismiss();
+            }
+        });
+
+        buttonCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CustomCalendarDialog dialog = new CustomCalendarDialog(v.getContext(), new CustomCalendarDialog.OnDateSelectedListener() {
+                    @Override
+                    public void onDateSelected(int day, int month, int year) {
+                        if (month < 10){
+                            String selectedDate = day + "/0" + (month + 1) + "/" + year;
+                            textViewDate.setText(selectedDate);
+                        } else{
+                            String selectedDate = day + "/" + (month + 1) + "/" + year;
+                            textViewDate.setText(selectedDate);
+                        }
+                    }
+                });
+                dialog.show();
             }
         });
     }

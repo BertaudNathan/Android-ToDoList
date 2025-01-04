@@ -11,8 +11,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.devmobile.todolistBertaudLeroi.R;
+import com.example.todolist.Model.MyCompatActivity;
 
-public class SplashScreen extends AppCompatActivity {
+public class SplashScreen extends MyCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
