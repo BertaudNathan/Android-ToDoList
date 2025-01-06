@@ -1,18 +1,12 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory app:title="@string/messages_header">
-
-        <EditTextPreference
-            app:key="signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
-
         <ListPreference
             app:defaultValue="Theme"
             app:entries="@array/Theme_entries"
             app:entryValues="@array/Theme_values"
             app:key="Theme"
-            app:title="Theme of the app"
+            app:title="Theme de l'application"
             app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
@@ -21,7 +15,16 @@
 
         <SwitchPreferenceCompat
             app:key="stayConnected"
-            app:title="Say connected when app close"
+            app:title="Rester connecté a la fermeture de l'application"
+            app:defaultValue="true"
+            />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="Notifications">
+
+        <SwitchPreferenceCompat
+            app:key="SendNotif"
+            app:title="Envoyer des notifications"
             />
     </PreferenceCategory>
 </PreferenceScreen>

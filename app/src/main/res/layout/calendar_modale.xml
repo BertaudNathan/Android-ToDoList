@@ -17,18 +17,20 @@
         android:paddingBottom="8dp" />
 
     <!-- Sélecteur de date -->
+
+    <!-- Boutons -->
     <DatePicker
         android:id="@+id/datePicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?attr/colorAccent"
+        android:backgroundTint="?attr/colorAccent"
+        android:calendarTextColor="?attr/colorOnPrimary"
         android:calendarViewShown="true"
-        android:spinnersShown="false"
         android:headerBackground="?attr/colorPrimary"
-        android:background="?attr/colorPrimaryVariant"
-        android:yearListSelectorColor="?attr/colorPrimary"
-        />
+        android:spinnersShown="false"
+        android:yearListSelectorColor="?attr/colorPrimary" />
 
-    <!-- Boutons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

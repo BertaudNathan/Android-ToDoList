@@ -3,7 +3,7 @@
     <string-array name="Theme_entries">
         <item>Light</item>
         <item>Dark</item>
-        <item>System</item>
+        <item>Systeme</item>
     </string-array>
 
     <string-array name="Theme_values">
