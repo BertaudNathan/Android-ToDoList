@@ -5,13 +5,13 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorAccent"
     android:backgroundTint="?attr/colorAccent"
     android:gravity="center"
     android:orientation="vertical"
     tools:context="com.example.todolist.SplashScreen">
 
     <ImageView
+        android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="101dp"
         android:src="@drawable/icon" />
@@ -20,13 +20,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Do-To List"
-        android:textColor="?attr/colorOnPrimary"
         android:textSize="30sp"
         android:textStyle="bold" />
 
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp" />
+        android:layout_marginTop="40dp"
+        android:foregroundTint="?attr/colorOnPrimary"
+        android:indeterminate="true"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="?attr/colorOnPrimary"/>
 
 </LinearLayout>

@@ -36,7 +36,6 @@ public class MyCompatActivity extends AppCompatActivity {
     private  void setTheme(){
         SharedPreferences pref = getSharedPreferences("com.devmobile.todolistBertaudLeroi_preferences", MODE_PRIVATE);
         String theme =pref.getString("Theme","");
-         Map<String, ?> t = pref.getAll();
         switch (theme){
 
             case "Dark":
