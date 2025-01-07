@@ -53,7 +53,7 @@ public class MainActivity extends BackConfirmActivity implements OnDialogCloseLi
 
     RecyclerView recyclerView;
     FloatingActionButton addButton;
-    DataBaseHelper myDB;
+
 
     private List mList;
     private ToDoAdapter adapter;
@@ -93,9 +93,8 @@ public class MainActivity extends BackConfirmActivity implements OnDialogCloseLi
 
         recyclerView = findViewById(R.id.recyclerView);
         addButton = findViewById(R.id.addButton);
-        myDB = new DataBaseHelper(MainActivity.this);
         mList = new ArrayList<>();
-        adapter = new ToDoAdapter(myDB, MainActivity.this);
+        adapter = new ToDoAdapter(MainActivity.this);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -146,10 +145,23 @@ public class MainActivity extends BackConfirmActivity implements OnDialogCloseLi
 
     @Override
     public void onDialogClose(DialogInterface dialogInterface) {
-        mList = myDB.getAllTasks();
-        Collections.reverse(mList);
-        adapter.setTasks(mList);
-        adapter.notifyDataSetChanged();
+        FirebaseService firebaseService = new FirebaseService(this);
+        firebaseService.getTasksForCurrentUser(new FirebaseService.ToDoCallback() {
+            @Override
+            public void onSuccess(List<ToDoModel> tasks) {
+                mList = new ArrayList<>();
+                for (ToDoModel task : tasks) {
+                    mList.add(task);
+                }
+                Collections.reverse(mList);
+                adapter.setTasks(mList);
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                System.err.println("Error: " + errorMessage);
+            }
+        });
     }
 
     @Override

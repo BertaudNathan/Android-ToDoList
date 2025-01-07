@@ -28,11 +28,11 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
 
     private List<ToDoModel> mList;
     private MainActivity activity;
-    private DataBaseHelper myDB;
+    private FirebaseService firebaseService;
 
-    public ToDoAdapter(DataBaseHelper myDB, MainActivity activity) {
+    public ToDoAdapter(MainActivity activity) {
         this.activity = activity;
-        this.myDB = myDB;
+        firebaseService = new FirebaseService(activity);
     }
 
 
@@ -54,9 +54,9 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(compoundButton.isChecked()) {
-                    myDB.updateStatus(item.getId(), 1);
+                    firebaseService.changeTaskStatus(item,true);
                 } else {
-                    myDB.updateStatus(item.getId(), 0);
+                    firebaseService.changeTaskStatus(item,false);
                 }
             }
         });
@@ -85,11 +85,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
 
     public void deleteTasks(int position) {
         ToDoModel item = mList.get(position);
-        //myDB.deleteTask(item.getId());
-        FirebaseService firebaseService = new FirebaseService(activity);
         firebaseService.deleteTask(item);
-
-
         mList.remove(position);
         notifyItemRemoved(position);
     }

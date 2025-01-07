@@ -35,7 +35,6 @@ public class AddNewTask extends BottomSheetDialogFragment {
     private Button buttonCalendar;
     private TextView textViewDate;
 
-    private DataBaseHelper myDB;
 
     public static AddNewTask newInstance() {
         return new AddNewTask();
@@ -56,8 +55,6 @@ public class AddNewTask extends BottomSheetDialogFragment {
         mSaveButton = view.findViewById(R.id.addButton);
         buttonCalendar = view.findViewById(R.id.buttonCalendar);
         textViewDate = view.findViewById(R.id.textViewDate);
-
-        myDB = new DataBaseHelper(getActivity());
 
         boolean isUpdate = false;
 
@@ -101,7 +98,22 @@ public class AddNewTask extends BottomSheetDialogFragment {
                 FirebaseService fbs = new FirebaseService(getContext());
                 if(finalIsUpdate) {
                     Log.d(TAG, "onClick: ");
-                    fbs.updateTask(fbs.getTask(bundle.getString("ID")),text);
+                    fbs.getTask(bundle.getString("Id"), new FirebaseService.OnTaskCompleteListener() {
+                        @Override
+                        public void onSuccess(ToDoModel task) {
+                            // Handle the retrieved task here
+                            fbs.updateTask(task,text);
+                            dismiss();
+                        }
+
+                        @Override
+                        public void onFailure(Exception e) {
+                            // Handle the failure case here
+                            Toast.makeText(getContext(), "Une erreur est survenue", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    return;
+
                 } else {
                     ToDoModel item;
                     if (textViewDate.getText().toString().isEmpty()){
@@ -109,7 +121,6 @@ public class AddNewTask extends BottomSheetDialogFragment {
                     } else{
                         item = new ToDoModel(text,textViewDate.getText().toString(),fbs.getCurrentUser().getEmail(), 0,0);
                     }
-                    myDB.insertTask(item);
                     fbs.addTask(item);
                 }
 

@@ -33,10 +33,17 @@ public class FirebaseService {
 
     }
 
-    public ToDoModel getTask(String id){
+    public void getTask(String uuid, OnTaskCompleteListener listener) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        ToDoModel task = database.getReference("tasks").child(id).get().getResult().getValue(ToDoModel.class);
-        return task;
+        database.getReference("tasks").child(uuid).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        ToDoModel taskModel = task.getResult().getValue(ToDoModel.class);
+                        listener.onSuccess(taskModel); // Pass the result to the callback
+                    } else {
+                        listener.onFailure(task.getException()); // Handle any errors
+                    }
+                });
     }
 
     public boolean addTask(ToDoModel task){
@@ -108,6 +115,13 @@ public class FirebaseService {
         }
         return false;
     }
+
+    public void changeTaskStatus(ToDoModel item, boolean b) {
+        item.setStatus(b ? 1 : 0);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        database.getReference("tasks").child(item.getUuid()).child("status").setValue(item.getStatus());
+    }
+
     public interface ToDoCallback {
         void onSuccess(List<ToDoModel> tasks);
         void onFailure(String errorMessage);
@@ -142,8 +156,14 @@ public class FirebaseService {
             }
         });
     }
+    public interface OnTaskCompleteListener {
+        void onSuccess(ToDoModel task);
+        void onFailure(Exception e);
+    }
 
 }
+
+
 
 
 
