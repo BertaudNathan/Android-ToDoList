@@ -3,6 +3,7 @@ package com.example.todolist.Model;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
 
@@ -10,9 +11,12 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.preference.Preference;
 
 import com.devmobile.todolistBertaudLeroi.R;
+import com.example.todolist.services.NotificationService;
 
 import java.util.Map;
 
@@ -21,7 +25,14 @@ public class MyCompatActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        NotificationService service = new NotificationService();
         setTheme();
+        if (ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.POST_NOTIFICATIONS},4
+            );
+        }
         super.onCreate(savedInstanceState);
 
     }
@@ -32,6 +43,11 @@ public class MyCompatActivity extends AppCompatActivity {
         super.onResume();
     }
 
+    @Override
+    protected void onStop() {
+        NotificationService service = new NotificationService();
+        super.onStop();
+    }
 
     private  void setTheme(){
         SharedPreferences pref = getSharedPreferences("com.devmobile.todolistBertaudLeroi_preferences", MODE_PRIVATE);

@@ -35,6 +35,16 @@
             android:label="@string/app_name" >
 
         </activity>
+        <service
+            android:name="com.example.todolist.services.NotificationService"
+            android:exported="true"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="com.example.todolist.services.NotificationService" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
 
     </application>
 

@@ -26,6 +26,12 @@ import com.example.todolist.services.FirebaseService;
 import com.example.todolist.ui.Modale.CustomCalendarDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class AddNewTask extends BottomSheetDialogFragment {
 
     public static final String TAG = "AddNewTask";
@@ -63,13 +69,9 @@ public class AddNewTask extends BottomSheetDialogFragment {
             isUpdate = true;
             String task = bundle.getString("task");
             mEditText.setText(task);
-
-            if(task.length() > 0) {
-                mSaveButton.setEnabled(false);
-            }
         }
 
-        mEditText.addTextChangedListener(new TextWatcher() {
+        /*mEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -79,7 +81,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if(charSequence.toString().equals("")) {
                     mSaveButton.setEnabled(false);
-                    mSaveButton.setBackgroundColor(Color.GRAY);
+                    mSaveButton.setBackgroundColor(Color.RED);
                 } else {
                     mSaveButton.setEnabled(true);
                 }
@@ -89,45 +91,48 @@ public class AddNewTask extends BottomSheetDialogFragment {
             public void afterTextChanged(Editable editable) {
 
             }
-        });
+        });*/
         boolean finalIsUpdate = isUpdate;
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String text = mEditText.getText().toString();
+                if (text.isEmpty()) {
+                    Toast.makeText(getContext(), "Veuillez entrer une tâche", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                String date = textViewDate.getText().toString();
                 FirebaseService fbs = new FirebaseService(getContext());
                 if(finalIsUpdate) {
                     Log.d(TAG, "onClick: ");
                     fbs.getTask(bundle.getString("Id"), new FirebaseService.OnTaskCompleteListener() {
                         @Override
                         public void onSuccess(ToDoModel task) {
-                            // Handle the retrieved task here
-                            fbs.updateTask(task,text);
+                            fbs.updateTask(task, text, date);
+                            sendDiscordWebhook("Tâche mise à jour : " + text + " (Date : " + date + ")");
                             dismiss();
                         }
 
                         @Override
                         public void onFailure(Exception e) {
-                            // Handle the failure case here
                             Toast.makeText(getContext(), "Une erreur est survenue", Toast.LENGTH_SHORT).show();
                         }
                     });
                     return;
-
                 } else {
                     ToDoModel item;
-                    if (textViewDate.getText().toString().isEmpty()){
-                        item = new ToDoModel(text,fbs.getCurrentUser().getEmail(), 0,0);
-                    } else{
-                        item = new ToDoModel(text,textViewDate.getText().toString(),fbs.getCurrentUser().getEmail(), 0,0);
+                    if (textViewDate.getText().toString().isEmpty()) {
+                        item = new ToDoModel(text, fbs.getCurrentUser().getEmail(), 0, 0);
+                    } else {
+                        item = new ToDoModel(text, textViewDate.getText().toString(), fbs.getCurrentUser().getEmail(), 0, 0);
                     }
                     fbs.addTask(item);
+                    sendDiscordWebhook("Nouvelle tâche ajoutée : " + text + " (Date : " + (date.isEmpty() ? "Non spécifiée" : date) + ")");
                 }
-
-
                 dismiss();
             }
         });
+
 
         buttonCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,4 +162,33 @@ public class AddNewTask extends BottomSheetDialogFragment {
             ((OnDialogCloseListener)activity).onDialogClose(dialog);
         }
     }
+
+    private void sendDiscordWebhook(String message) {
+        String webhookUrl = "https://discord.com/api/webhooks/1326202033996566590/L4jPUB5Kt8rIgPr9TLXlCx-wHMKVtrFwAJ-Eli65iCW0HvqYTJje9nXgTvmeO3SICA4T";
+
+        new Thread(() -> {
+            OkHttpClient client = new OkHttpClient();
+            MediaType JSON = MediaType.get("application/json; charset=utf-8"); // Ajout du type MIME
+            String json = "{\"content\": \"" + message + "\"}";
+
+            RequestBody body = RequestBody.create(json, JSON); // Utilisation de MediaType
+            Request request = new Request.Builder()
+                    .url(webhookUrl)
+                    .post(body)
+                    .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "Message envoyé à Discord avec succès : " + message);
+                } else {
+                    Log.e(TAG, "Échec lors de l'envoi du message à Discord : " + response.message());
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Erreur lors de l'envoi au webhook Discord", e);
+            }
+        }).start();
+    }
+
+
 }
