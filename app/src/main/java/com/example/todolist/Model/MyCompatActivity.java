@@ -27,14 +27,14 @@ public class MyCompatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
-        setTheme();
+        NotificationService service = new NotificationService();
+        startService(new Intent(this, NotificationService.class));
         if (ContextCompat.checkSelfPermission(this,
                 android.Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.POST_NOTIFICATIONS},4
             );
         }
-        startService(new Intent(this, NotificationService.class));
         super.onCreate(savedInstanceState);
 
     }
