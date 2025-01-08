@@ -5,16 +5,16 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome "</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
-    <string name="register">Register</string>
-    <string name="Register">Register</string>
-    <string name="login">Login</string>
+    <string name="prompt_password">Mot de passe</string>
+    <string name="action_sign_in">S\'inscrire ou se connecter</string>
+    <string name="action_sign_in_short">S\'inscrire</string>
+    <string name="welcome">Bienvenue</string>
+    <string name="invalid_username">l\'adresse e-mail est invalide</string>
+    <string name="invalid_password">Le mot de passe doit comporter 6 caractères au minimum</string>
+    <string name="login_failed">l\'authentification a echouée</string>
+    <string name="register">S\'inscrire</string>
+    <string name="Register">S\'inscrire</string>
+    <string name="login">Se connecter</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_preference">PreferenceActivity</string>

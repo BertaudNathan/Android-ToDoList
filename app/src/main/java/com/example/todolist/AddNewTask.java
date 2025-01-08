@@ -63,13 +63,9 @@ public class AddNewTask extends BottomSheetDialogFragment {
             isUpdate = true;
             String task = bundle.getString("task");
             mEditText.setText(task);
-
-            if(task.length() > 0) {
-                mSaveButton.setEnabled(false);
-            }
         }
 
-        mEditText.addTextChangedListener(new TextWatcher() {
+        /*mEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -79,7 +75,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if(charSequence.toString().equals("")) {
                     mSaveButton.setEnabled(false);
-                    mSaveButton.setBackgroundColor(Color.GRAY);
+                    mSaveButton.setBackgroundColor(Color.RED);
                 } else {
                     mSaveButton.setEnabled(true);
                 }
@@ -89,12 +85,17 @@ public class AddNewTask extends BottomSheetDialogFragment {
             public void afterTextChanged(Editable editable) {
 
             }
-        });
+        });*/
         boolean finalIsUpdate = isUpdate;
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String text = mEditText.getText().toString();
+                if (text.isEmpty()) {
+                    Toast.makeText(getContext(), "Veuillez entrer une tâche", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                String date = textViewDate.getText().toString();
                 FirebaseService fbs = new FirebaseService(getContext());
                 if(finalIsUpdate) {
                     Log.d(TAG, "onClick: ");
@@ -102,7 +103,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
                         @Override
                         public void onSuccess(ToDoModel task) {
                             // Handle the retrieved task here
-                            fbs.updateTask(task,text);
+                            fbs.updateTask(task,text,date);
                             dismiss();
                         }
 

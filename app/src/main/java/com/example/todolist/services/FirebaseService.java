@@ -52,9 +52,10 @@ public class FirebaseService {
         return true;
     }
 
-    public boolean updateTask(ToDoModel task,String newText){
+    public boolean updateTask(ToDoModel task,String newText, String newDate){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         database.getReference("tasks").child(task.getUuid()).child("task").setValue(newText);
+        database.getReference("tasks").child(task.getUuid()).child("date").setValue(newDate);
         return true;
     }
 
