@@ -26,8 +26,8 @@ public class MyCompatActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        NotificationService service = new NotificationService(this);
-        startService(new Intent(this, NotificationService.class));
+        //NotificationService service = new NotificationService(this);
+        //startService(new Intent(this, NotificationService.class));
         if (ContextCompat.checkSelfPermission(this,
                 android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
@@ -46,8 +46,8 @@ public class MyCompatActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        NotificationService service = new NotificationService(this);
-        startService(new Intent(this, NotificationService.class));
+        //NotificationService service = new NotificationService(this);
+        //startService(new Intent(this, NotificationService.class));
         super.onStop();
     }
 
