@@ -140,11 +140,11 @@ public class AddNewTask extends BottomSheetDialogFragment {
             }
         });
 
-
         buttonCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CustomCalendarDialog dialog = new CustomCalendarDialog(v.getContext(), getTheme(), new CustomCalendarDialog.OnDateSelectedListener() {
+
                     @Override
                     public void onDateSelected(int day, int month, int year) {
                         if (month < 10){
@@ -170,8 +170,20 @@ public class AddNewTask extends BottomSheetDialogFragment {
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
 
+        if (getDialog() != null && getDialog().getWindow() != null) {
+            getDialog().getWindow().setLayout(
+                    (int) (getContext().getResources().getDisplayMetrics().widthPixels * 0.8), // 90% de la largeur
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            );
 
-
+            // Applique une gravité avec un décalage vertical
+            getDialog().getWindow().setGravity(android.view.Gravity.CENTER);
+            getDialog().getWindow().getAttributes().y = -800;
+        }
+    }
 
 }

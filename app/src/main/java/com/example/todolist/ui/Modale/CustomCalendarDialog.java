@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -56,5 +57,18 @@ public class CustomCalendarDialog extends Dialog {
                 dismiss();
             }
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (getWindow() != null) {
+            getWindow().setLayout(
+                    (int) (getContext().getResources().getDisplayMetrics().widthPixels * 0.9), // 90% de la largeur de l'écran
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+            getWindow().setGravity(android.view.Gravity.CENTER);
+        }
     }
 }
