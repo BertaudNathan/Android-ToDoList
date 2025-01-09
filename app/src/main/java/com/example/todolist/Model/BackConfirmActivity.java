@@ -2,11 +2,14 @@ package com.example.todolist.Model;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.todolist.services.NotificationService;
 
 public class BackConfirmActivity extends MyCompatActivity {
 
@@ -23,7 +26,8 @@ public class BackConfirmActivity extends MyCompatActivity {
                         .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                finishAndRemoveTask();
+
+                                finish();
                             }
                         })
                         .setNegativeButton("non", new DialogInterface.OnClickListener() {

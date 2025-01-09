@@ -40,6 +40,8 @@ public class AddNewTask extends BottomSheetDialogFragment {
     private Button mSaveButton;
     private Button buttonCalendar;
     private TextView textViewDate;
+    public Context context;
+
 
 
     public static AddNewTask newInstance() {
@@ -61,6 +63,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
         mSaveButton = view.findViewById(R.id.addButton);
         buttonCalendar = view.findViewById(R.id.buttonCalendar);
         textViewDate = view.findViewById(R.id.textViewDate);
+        context = this.getContext();
 
         boolean isUpdate = false;
 
@@ -102,7 +105,8 @@ public class AddNewTask extends BottomSheetDialogFragment {
                     return;
                 }
                 String date = textViewDate.getText().toString();
-                FirebaseService fbs = new FirebaseService(getContext());
+                FirebaseService fbs =  FirebaseService.getInstance(getContext());
+
                 if(finalIsUpdate) {
                     Log.d(TAG, "onClick: ");
                     fbs.getTask(bundle.getString("Id"), new FirebaseService.OnTaskCompleteListener() {
@@ -110,8 +114,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
                         public void onSuccess(ToDoModel task) {
                             fbs.updateTask(task, text, date);
                             sendDiscordWebhook("Tâche mise à jour : " + text + " (Date : " + date + ")");
-                            Log.d(TAG, "Appel de saveTaskToNotion (update)");
-                            saveTaskToNotion(text);
+                            NotificationService.SendNotification("Tâche mise à jour",text,context);
                             dismiss();
                         }
 
@@ -132,6 +135,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
                     }
                     fbs.addTask(item);
                     sendDiscordWebhook("Nouvelle tâche ajoutée : " + text + " (Date : " + (date.isEmpty() ? "Non spécifiée" : date) + ")");
+                    NotificationService.SendNotification("Nouvelle tache",text,context);
                     Log.d(TAG, "Appel de saveTaskToNotion (create)");
                     saveTaskToNotion(text);
                 }

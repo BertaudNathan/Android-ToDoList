@@ -23,14 +23,20 @@ import java.util.List;
 
 public class FirebaseService {
 
-    private FirebaseAuth mAuth;
+    private static FirebaseService instance;
+    private final FirebaseAuth mAuth;
+    private final Context context;
 
-    private Context context;
-
-    public FirebaseService(Context ctx){
+    private FirebaseService(Context context) {
         this.mAuth = FirebaseAuth.getInstance();
-        this.context = ctx;
+        this.context = context;
+    }
 
+    public static synchronized FirebaseService getInstance(Context context) {
+        if (instance == null) {
+            instance = new FirebaseService(context.getApplicationContext());
+        }
+        return instance;
     }
 
     public void getTask(String uuid, OnTaskCompleteListener listener) {
@@ -39,46 +45,45 @@ public class FirebaseService {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
                         ToDoModel taskModel = task.getResult().getValue(ToDoModel.class);
-                        listener.onSuccess(taskModel); // Pass the result to the callback
+                        listener.onSuccess(taskModel);
                     } else {
-                        listener.onFailure(task.getException()); // Handle any errors
+                        listener.onFailure(task.getException());
                     }
                 });
     }
 
-    public boolean addTask(ToDoModel task){
+    public boolean addTask(ToDoModel task) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         database.getReference("tasks").child(task.getUuid()).setValue(task);
         return true;
     }
 
-    public boolean updateTask(ToDoModel task,String newText, String newDate){
+    public boolean updateTask(ToDoModel task, String newText, String newDate) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         database.getReference("tasks").child(task.getUuid()).child("task").setValue(newText);
         database.getReference("tasks").child(task.getUuid()).child("date").setValue(newDate);
         return true;
     }
 
-    public boolean deleteTask(ToDoModel task){
+    public boolean deleteTask(ToDoModel task) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         database.getReference("tasks").child(task.getUuid()).removeValue();
         return true;
     }
 
-    public boolean logOut(){
+    public boolean logOut() {
         mAuth.signOut();
         return true;
     }
 
-    public boolean tryLogIn(String email,String password){
-        final boolean result = false;
+    public boolean tryLogIn(String email, String password) {
         Task<AuthResult> task = mAuth.signInWithEmailAndPassword(email, password);
         if (task.getException() == null) {
             return true;
         } else {
             try {
                 throw task.getException();
-            }  catch (FirebaseAuthInvalidCredentialsException e) {
+            } catch (FirebaseAuthInvalidCredentialsException e) {
                 Toast.makeText(context, "Invalid Credentials", Toast.LENGTH_LONG).show();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -87,30 +92,24 @@ public class FirebaseService {
         }
     }
 
-    public FirebaseUser getCurrentUser(){
+    public FirebaseUser getCurrentUser() {
         return mAuth.getCurrentUser();
     }
 
-    public boolean createUser(String email, String password){
-        final FirebaseUser[] connUser = {null};
+    public boolean createUser(String email, String password) {
         Task<AuthResult> task = mAuth.createUserWithEmailAndPassword(email, password);
         if (task.getException() == null) {
             return true;
-        }
-        else {
+        } else {
             try {
                 throw task.getException();
-            }
-            catch (FirebaseAuthWeakPasswordException e) {
-                Toast.makeText(context, "Passwor needs to be more than 6 characters", Toast.LENGTH_LONG).show();
-            }
-            catch (FirebaseAuthEmailException e){
+            } catch (FirebaseAuthWeakPasswordException e) {
+                Toast.makeText(context, "Password needs to be more than 6 characters", Toast.LENGTH_LONG).show();
+            } catch (FirebaseAuthEmailException e) {
                 Toast.makeText(context, "Invalid Email format", Toast.LENGTH_LONG).show();
-            }
-            catch (FirebaseAuthException e){
+            } catch (FirebaseAuthException e) {
                 Toast.makeText(context, "Invalid Credentials", Toast.LENGTH_LONG).show();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -125,6 +124,7 @@ public class FirebaseService {
 
     public interface ToDoCallback {
         void onSuccess(List<ToDoModel> tasks);
+
         void onFailure(String errorMessage);
     }
 
@@ -140,7 +140,7 @@ public class FirebaseService {
         databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                List<ToDoModel>  userTasks = new ArrayList<>();
+                List<ToDoModel> userTasks = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     ToDoModel task = snapshot.getValue(ToDoModel.class);
 
@@ -158,15 +158,10 @@ public class FirebaseService {
             }
         });
     }
+
     public interface OnTaskCompleteListener {
         void onSuccess(ToDoModel task);
+
         void onFailure(Exception e);
     }
-
 }
-
-
-
-
-
-

@@ -83,7 +83,7 @@ public class MainActivity extends BackConfirmActivity implements OnDialogCloseLi
 
         // to make the Navigation drawer icon always appear on the action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        FirebaseService firebaseService = new FirebaseService(this);
+        FirebaseService firebaseService = FirebaseService.getInstance(this);
         FirebaseUser user = firebaseService.getCurrentUser();
 
         if (user == null) {
@@ -145,7 +145,7 @@ public class MainActivity extends BackConfirmActivity implements OnDialogCloseLi
 
     @Override
     public void onDialogClose(DialogInterface dialogInterface) {
-        FirebaseService firebaseService = new FirebaseService(this);
+        FirebaseService firebaseService = FirebaseService.getInstance(this);
         firebaseService.getTasksForCurrentUser(new FirebaseService.ToDoCallback() {
             @Override
             public void onSuccess(List<ToDoModel> tasks) {

@@ -48,6 +48,8 @@ dependencies {
     implementation(libs.annotation)
     implementation(libs.activity)
     implementation(libs.preference)
+    implementation(libs.firebase.messaging)
+    implementation(platform(libs.firebase.bom.v3200))
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
