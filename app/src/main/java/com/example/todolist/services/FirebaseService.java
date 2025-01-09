@@ -144,9 +144,10 @@ public class FirebaseService {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     ToDoModel task = snapshot.getValue(ToDoModel.class);
 
-                    if (task != null && task.getUserEmail().equals(currentUserEmail)) {
+                    if (task != null && task.getUserEmail() != null && task.getUserEmail().equals(currentUserEmail)) {
                         userTasks.add(task);
                     }
+
                 }
                 callback.onSuccess(userTasks);
             }
