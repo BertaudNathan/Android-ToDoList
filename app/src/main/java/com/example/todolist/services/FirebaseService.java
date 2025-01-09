@@ -1,16 +1,16 @@
 package com.example.todolist.services;
 
 import android.content.Context;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.example.todolist.Model.ToDoModel;
+import com.example.todolist.Model.callbacks.CreateUserCallback;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthEmailException;
-import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -71,49 +71,40 @@ public class FirebaseService {
         return true;
     }
 
-    public boolean logOut() {
+    public void logOut() {
         mAuth.signOut();
-        return true;
     }
 
-    public boolean tryLogIn(String email, String password) {
-        Task<AuthResult> task = mAuth.signInWithEmailAndPassword(email, password);
-        if (task.getException() == null) {
-            return true;
-        } else {
-            try {
-                throw task.getException();
-            } catch (FirebaseAuthInvalidCredentialsException e) {
-                Toast.makeText(context, "Invalid Credentials", Toast.LENGTH_LONG).show();
-            } catch (Exception e) {
-                e.printStackTrace();
+    public void tryLogIn(String email, String password,CreateUserCallback callback) {
+        Task<AuthResult> task = mAuth.signInWithEmailAndPassword(email, password) .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    callback.onResult("success");
+                } else {
+                    callback.onResult("le mot de passe doit faire au minimum 6 caractères");
+                }
             }
-            return false;
-        }
+        });
+
     }
 
     public FirebaseUser getCurrentUser() {
         return mAuth.getCurrentUser();
     }
 
-    public boolean createUser(String email, String password) {
-        Task<AuthResult> task = mAuth.createUserWithEmailAndPassword(email, password);
-        if (task.getException() == null) {
-            return true;
-        } else {
-            try {
-                throw task.getException();
-            } catch (FirebaseAuthWeakPasswordException e) {
-                Toast.makeText(context, "Password needs to be more than 6 characters", Toast.LENGTH_LONG).show();
-            } catch (FirebaseAuthEmailException e) {
-                Toast.makeText(context, "Invalid Email format", Toast.LENGTH_LONG).show();
-            } catch (FirebaseAuthException e) {
-                Toast.makeText(context, "Invalid Credentials", Toast.LENGTH_LONG).show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return false;
+    public void createUser(String email, String password, CreateUserCallback callback) {
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            callback.onResult("success");
+                        } else {
+                            callback.onResult("le mot de passe doit faire au minimum 6 caractères");
+                        }
+                    }
+                });
     }
 
     public void changeTaskStatus(ToDoModel item, boolean b) {

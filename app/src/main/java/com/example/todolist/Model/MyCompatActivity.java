@@ -37,6 +37,7 @@ public class MyCompatActivity extends AppCompatActivity {
 
     }
 
+
     @Override
     protected void onResume() {
         setTheme();

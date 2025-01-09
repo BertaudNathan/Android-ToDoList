@@ -1,17 +1,13 @@
 package com.example.todolist;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.example.todolist.Model.MyCompatActivity;
-import com.example.todolist.services.FirebaseService;
-import com.example.todolist.services.IntentOpenerService;
 import com.devmobile.todolistBertaudLeroi.R;
 
 public class PreferenceActivity extends MyCompatActivity {

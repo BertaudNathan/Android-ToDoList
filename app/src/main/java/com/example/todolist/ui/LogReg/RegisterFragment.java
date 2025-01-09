@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.devmobile.todolistBertaudLeroi.R;
 import com.example.todolist.MainActivity;
 import com.example.todolist.services.FirebaseService;
+import com.example.todolist.Model.callbacks.CreateUserCallback;
 import com.devmobile.todolistBertaudLeroi.databinding.FragmentRegisterBinding;
 
 public class RegisterFragment extends Fragment {
@@ -39,20 +40,29 @@ public class RegisterFragment extends Fragment {
     }
 
     public void Register_Click(View view){
-        Log.d("ezdzfzfz", "LogIn_Click: erzefzefezzef");
         FirebaseService fbs = FirebaseService.getInstance(this.getContext());
         TextView email =  binding.editTextTextEmailAddress;
         TextView pwd =  binding.editTextTextPassword;
         if (email.getText().toString().isEmpty() || pwd.getText().toString().isEmpty()){
             return ;
         }
-        if (fbs.createUser( email.getText().toString(),  pwd.getText().toString())){
-            Intent intent = new Intent(this.getContext(), MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        }
-        else{
-            Toast.makeText(this.getContext(), "Erreur de connexion", Toast.LENGTH_SHORT).show();
-        }
+        fbs.createUser( email.getText().toString(),  pwd.getText().toString(), new CreateUserCallback() {
+            @Override
+            public void onResult(String result) {
+                if ("success".equals(result)) {
+                    email.setText("");
+                    pwd.setText("");
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                } else {
+                    email.setText("");
+                    pwd.setText("");
+                    Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
     }
 }
+

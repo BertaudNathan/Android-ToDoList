@@ -19,38 +19,41 @@
     <!-- Sélecteur de date -->
 
     <!-- Boutons -->
+
     <DatePicker
         android:id="@+id/datePicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorAccent"
-        android:backgroundTint="?attr/colorAccent"
-        android:calendarTextColor="?attr/colorOnPrimary"
+        android:background="@color/light_grey"
+        android:backgroundTint="#EFE8E8"
+        android:calendarTextColor="@color/black"
         android:calendarViewShown="true"
-        android:headerBackground="?attr/colorPrimary"
+        android:headerBackground="@color/black"
         android:spinnersShown="false"
-        android:yearListSelectorColor="?attr/colorPrimary" />
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:background="#EFE8E8"
+        android:backgroundTint="#EFE8E8"
         android:gravity="end"
+        android:orientation="horizontal"
         android:paddingTop="16dp">
 
         <Button
             android:id="@+id/btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Annuler"
-            android:background="?attr/selectableItemBackground" />
+            android:background="?attr/selectableItemBackground"
+            android:text="Annuler" />
 
         <Button
             android:id="@+id/btn_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="Confirmer"
-            android:background="?attr/selectableItemBackground" />
+            android:background="?attr/selectableItemBackground"
+            android:text="Confirmer" />
     </LinearLayout>
 </LinearLayout>

@@ -2,14 +2,13 @@ package com.example.todolist.Model;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.todolist.services.NotificationService;
+import com.example.todolist.services.FirebaseService;
 
 public class BackConfirmActivity extends MyCompatActivity {
 
@@ -40,5 +39,17 @@ public class BackConfirmActivity extends MyCompatActivity {
                 alertDialog.show();
             }
         });
+    }
+
+    @Override
+    public void finish() {
+        SharedPreferences pref = getSharedPreferences("com.devmobile.todolistBertaudLeroi_preferences", MODE_PRIVATE);
+        boolean bConnect =pref.getBoolean("stayConnected",true);
+        if (!bConnect){
+            FirebaseService.getInstance(this).logOut();
+        }
+
+        super.finish();
+
     }
 }

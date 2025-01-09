@@ -1,5 +1,6 @@
 package com.example.todolist.ui.LogReg;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.devmobile.todolistBertaudLeroi.R;
 import com.example.todolist.MainActivity;
+import com.example.todolist.Model.callbacks.CreateUserCallback;
 import com.example.todolist.services.FirebaseService;
 import com.devmobile.todolistBertaudLeroi.databinding.FragmentLoginBinding;
 
@@ -29,34 +31,37 @@ public class LogInFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Utilisez uniquement le binding pour gérer la vue
         binding = FragmentLoginBinding.inflate(inflater, container, false);
 
-        // Configurer le gestionnaire d'événements pour le bouton
         binding.buttonLogin.setOnClickListener(this::LogIn_Click);
 
-        return binding.getRoot(); // Retourner la vue du binding
+        return binding.getRoot();
     }
 
     public void LogIn_Click(View view){
-        Log.d("ezdzfzfz", "LogIn_Click: erzefzefezzef");
         FirebaseService fbs = FirebaseService.getInstance(this.getContext());
         TextView email =  binding.editTextTextEmailAddress;
         TextView pwd =  binding.editTextTextPassword;
         if (email.getText().toString().isEmpty() || pwd.getText().toString().isEmpty()){
             return ;
         }
-        if (fbs.tryLogIn( email.getText().toString(),  pwd.getText().toString())){
-            Intent intent = new Intent(this.getContext(), MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        }
-        else{
-            Toast.makeText(this.getContext(), "Erreur de connexion", Toast.LENGTH_SHORT).show();
-        }
+        Context t = getContext();
+        fbs.tryLogIn( email.getText().toString(),  pwd.getText().toString(), new CreateUserCallback() {
+            @Override
+            public void onResult(String result) {
+                if ("success".equals(result)) {
+                    email.setText("");
+                    pwd.setText("");
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                } else {
+                    email.setText("");
+                    pwd.setText("");
+                    Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
-    public void Register_Click(View view) {
-
-    }
 }

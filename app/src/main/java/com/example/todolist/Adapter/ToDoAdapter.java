@@ -17,10 +17,7 @@ import com.devmobile.todolistBertaudLeroi.R;
 import com.example.todolist.AddNewTask;
 import com.example.todolist.MainActivity;
 import com.example.todolist.Model.ToDoModel;
-import com.example.todolist.Utils.DataBaseHelper;
 import com.example.todolist.services.FirebaseService;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 

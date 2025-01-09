@@ -1,7 +1,9 @@
 package com.example.todolist.ui.Modale;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,8 +22,8 @@ public class CustomCalendarDialog extends Dialog {
         void onDateSelected(int day, int month, int year);
     }
 
-    public CustomCalendarDialog(@NonNull Context context, OnDateSelectedListener listener) {
-        super(context);
+    public CustomCalendarDialog(@NonNull Context context, int theme, OnDateSelectedListener listener) {
+        super(context,theme);
         this.onDateSelectedListener = listener;
     }
 

@@ -21,17 +21,11 @@ import androidx.annotation.Nullable;
 
 import com.devmobile.todolistBertaudLeroi.R;
 import com.example.todolist.Model.ToDoModel;
-import com.example.todolist.Utils.DataBaseHelper;
+import com.example.todolist.services.ApiCallsService;
 import com.example.todolist.services.FirebaseService;
 import com.example.todolist.services.NotificationService;
 import com.example.todolist.ui.Modale.CustomCalendarDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class AddNewTask extends BottomSheetDialogFragment {
 
@@ -114,7 +108,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
                         @Override
                         public void onSuccess(ToDoModel task) {
                             fbs.updateTask(task, text, date);
-                            sendDiscordWebhook("Tâche mise à jour : " + text + " (Date : " + date + ")");
+                            ApiCallsService.sendDiscordWebhook("Tâche mise à jour : " + text + " (Date : " + date + ")",context);
                             NotificationService.SendNotification("Tâche mise à jour",text,context);
                             dismiss();
                         }
@@ -135,10 +129,10 @@ public class AddNewTask extends BottomSheetDialogFragment {
                         item = new ToDoModel(text, textViewDate.getText().toString(), fbs.getCurrentUser().getEmail(), 0, 0);
                     }
                     fbs.addTask(item);
-                    sendDiscordWebhook("Nouvelle tâche ajoutée : " + text + " (Date : " + (date.isEmpty() ? "Non spécifiée" : date) + ")");
+                    ApiCallsService.sendDiscordWebhook("Nouvelle tâche ajoutée : " + text + " (Date : " + (date.isEmpty() ? "Non spécifiée" : date) + ")",context);
                     NotificationService.SendNotification("Nouvelle tache",text,context);
                     Log.d(TAG, "Appel de saveTaskToNotion (create)");
-                    saveTaskToNotion(text);
+                    ApiCallsService.saveTaskToNotion(text,context);
                 }
 
 
@@ -150,7 +144,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
         buttonCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CustomCalendarDialog dialog = new CustomCalendarDialog(v.getContext(), new CustomCalendarDialog.OnDateSelectedListener() {
+                CustomCalendarDialog dialog = new CustomCalendarDialog(v.getContext(), getTheme(), new CustomCalendarDialog.OnDateSelectedListener() {
                     @Override
                     public void onDateSelected(int day, int month, int year) {
                         if (month < 10){
@@ -176,80 +170,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
         }
     }
 
-    private void sendDiscordWebhook(String message) {
-        String webhookUrl = "https://discord.com/api/webhooks/1326202033996566590/L4jPUB5Kt8rIgPr9TLXlCx-wHMKVtrFwAJ-Eli65iCW0HvqYTJje9nXgTvmeO3SICA4T";
 
-        new Thread(() -> {
-            OkHttpClient client = new OkHttpClient();
-            MediaType JSON = MediaType.get("application/json; charset=utf-8"); // Ajout du type MIME
-            String json = "{\"content\": \"" + message + "\"}";
-
-            RequestBody body = RequestBody.create(json, JSON); // Utilisation de MediaType
-            Request request = new Request.Builder()
-                    .url(webhookUrl)
-                    .post(body)
-                    .build();
-
-            try {
-                Response response = client.newCall(request).execute();
-                if (response.isSuccessful()) {
-                    Log.d(TAG, "Message envoyé à Discord avec succès : " + message);
-                } else {
-                    Log.e(TAG, "Échec lors de l'envoi du message à Discord : " + response.message());
-                }
-            } catch (Exception e) {
-                Log.e(TAG, "Erreur lors de l'envoi au webhook Discord", e);
-            }
-        }).start();
-    }
-
-    private void saveTaskToNotion(String taskName) {
-        String notionApiUrl = "https://api.notion.com/v1/pages";
-        String databaseId = "1764883f69588035b86aefd7abdda153"; // Utilisez votre propre database_id
-        String token = "Bearer secret_N401BJTyDoYu1xAwRfrX6Mn5Nnvkb8uAByDyHjwWJru"; // Remplacez par votre propre token
-
-        new Thread(() -> {
-            OkHttpClient client = new OkHttpClient();
-            MediaType JSON = MediaType.get("application/json; charset=utf-8");
-
-            // JSON formaté selon la documentation officielle
-            String json = "{\n" +
-                    "  \"parent\": { \"type\": \"database_id\", \"database_id\": \"" + databaseId + "\" },\n" +
-                    "  \"properties\": {\n" +
-                    "    \"content\": {\n" +
-                    "      \"type\": \"title\",\n" +
-                    "      \"title\": [\n" +
-                    "        { \"type\": \"text\", \"text\": { \"content\": \"" + taskName + "\" } }\n" +
-                    "      ]\n" +
-                    "    }\n" +
-                    "  }\n" +
-                    "}";
-
-            Log.d(TAG, "JSON généré pour Notion : " + json);
-
-            RequestBody body = RequestBody.create(json, JSON);
-            Request request = new Request.Builder()
-                    .url(notionApiUrl)
-                    .post(body)
-                    .addHeader("Authorization", token)
-                    .addHeader("Content-Type", "application/json")
-                    .addHeader("Notion-Version", "2022-06-28")
-                    .build();
-
-            try {
-                Response response = client.newCall(request).execute();
-                if (response.isSuccessful()) {
-                    Log.d(TAG, "Tâche ajoutée à Notion avec succès : " + taskName);
-                } else {
-                    String errorBody = response.body() != null ? response.body().string() : "Réponse vide";
-                    Log.e(TAG, "Échec lors de l'ajout à Notion : Code HTTP " + response.code());
-                    Log.e(TAG, "Détails de l'erreur : " + errorBody);
-                }
-            } catch (Exception e) {
-                Log.e(TAG, "Exception lors de l'envoi à Notion", e);
-            }
-        }).start();
-    }
 
 
 

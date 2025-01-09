@@ -23,8 +23,25 @@
     <PreferenceCategory app:title="Notifications">
 
         <SwitchPreferenceCompat
-            app:key="SendNotif"
-            app:title="Envoyer des notifications"
+            app:key="SendNotifDiscord"
+            app:title="Envoyer des notifications sur Discord"
+            />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="Synchronisation">
+
+        <SwitchPreferenceCompat
+            app:key="SyncNotion"
+            app:title="Synchroniser avec une page Notion"
+            />
+        <EditTextPreference
+            app:key="cleApiNotion"
+            app:title="clé API Notion"
+            />
+
+        <EditTextPreference
+            app:key="lienNotion"
+            app:title="Lien base de donnée notion"
             />
     </PreferenceCategory>
 </PreferenceScreen>

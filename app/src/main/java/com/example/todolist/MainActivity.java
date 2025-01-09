@@ -1,39 +1,25 @@
 package com.example.todolist;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.devmobile.todolistBertaudLeroi.R;
 
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.todolist.Model.BackConfirmActivity;
 
-import com.devmobile.todolistBertaudLeroi.R;
 import com.example.todolist.Adapter.ToDoAdapter;
 import com.example.todolist.Model.ToDoModel;
-import com.example.todolist.Utils.DataBaseHelper;
 import com.example.todolist.services.IntentOpenerService;
-import com.example.todolist.ui.LogReg.RegisterFragment;
 import com.example.todolist.services.FirebaseService;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
