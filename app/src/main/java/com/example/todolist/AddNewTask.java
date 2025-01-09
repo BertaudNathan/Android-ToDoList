@@ -110,6 +110,8 @@ public class AddNewTask extends BottomSheetDialogFragment {
                         public void onSuccess(ToDoModel task) {
                             fbs.updateTask(task, text, date);
                             sendDiscordWebhook("Tâche mise à jour : " + text + " (Date : " + date + ")");
+                            Log.d(TAG, "Appel de saveTaskToNotion (update)");
+                            saveTaskToNotion(text);
                             dismiss();
                         }
 
@@ -130,6 +132,8 @@ public class AddNewTask extends BottomSheetDialogFragment {
                     }
                     fbs.addTask(item);
                     sendDiscordWebhook("Nouvelle tâche ajoutée : " + text + " (Date : " + (date.isEmpty() ? "Non spécifiée" : date) + ")");
+                    Log.d(TAG, "Appel de saveTaskToNotion (create)");
+                    saveTaskToNotion(text);
                 }
 
 
@@ -193,6 +197,55 @@ public class AddNewTask extends BottomSheetDialogFragment {
             }
         }).start();
     }
+
+    private void saveTaskToNotion(String taskName) {
+        String notionApiUrl = "https://api.notion.com/v1/pages";
+        String databaseId = "1764883f69588035b86aefd7abdda153"; // Utilisez votre propre database_id
+        String token = "Bearer secret_N401BJTyDoYu1xAwRfrX6Mn5Nnvkb8uAByDyHjwWJru"; // Remplacez par votre propre token
+
+        new Thread(() -> {
+            OkHttpClient client = new OkHttpClient();
+            MediaType JSON = MediaType.get("application/json; charset=utf-8");
+
+            // JSON formaté selon la documentation officielle
+            String json = "{\n" +
+                    "  \"parent\": { \"type\": \"database_id\", \"database_id\": \"" + databaseId + "\" },\n" +
+                    "  \"properties\": {\n" +
+                    "    \"content\": {\n" +
+                    "      \"type\": \"title\",\n" +
+                    "      \"title\": [\n" +
+                    "        { \"type\": \"text\", \"text\": { \"content\": \"" + taskName + "\" } }\n" +
+                    "      ]\n" +
+                    "    }\n" +
+                    "  }\n" +
+                    "}";
+
+            Log.d(TAG, "JSON généré pour Notion : " + json);
+
+            RequestBody body = RequestBody.create(json, JSON);
+            Request request = new Request.Builder()
+                    .url(notionApiUrl)
+                    .post(body)
+                    .addHeader("Authorization", token)
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Notion-Version", "2022-06-28")
+                    .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "Tâche ajoutée à Notion avec succès : " + taskName);
+                } else {
+                    String errorBody = response.body() != null ? response.body().string() : "Réponse vide";
+                    Log.e(TAG, "Échec lors de l'ajout à Notion : Code HTTP " + response.code());
+                    Log.e(TAG, "Détails de l'erreur : " + errorBody);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Exception lors de l'envoi à Notion", e);
+            }
+        }).start();
+    }
+
 
 
 }
