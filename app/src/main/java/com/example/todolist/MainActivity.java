@@ -113,8 +113,8 @@ public class MainActivity extends BackConfirmActivity implements OnDialogCloseLi
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
         binding.sidenavbar.setNavigationItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.nav_account) {
-                IntentOpenerService.OpenMainActivity(this, false);
+            if (item.getItemId() == R.id.nav_propos) {
+                IntentOpenerService.OpenAProposActivity(this, false);
             }
             if (item.getItemId() == R.id.nav_settings) {
                 IntentOpenerService.OpenPreferenceActivity(this, false);
@@ -126,7 +126,6 @@ public class MainActivity extends BackConfirmActivity implements OnDialogCloseLi
             }
             return true;
         });
-        Toast.makeText(this, "Vous etes connecté en tant que " + user.getEmail(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

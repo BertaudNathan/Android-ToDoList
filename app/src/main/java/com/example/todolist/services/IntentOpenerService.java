@@ -3,6 +3,7 @@ package com.example.todolist.services;
 import android.content.Context;
 import android.content.Intent;
 
+import com.example.todolist.AProposActivity;
 import com.example.todolist.LoginRegisterActivity;
 import com.example.todolist.MainActivity;
 import com.example.todolist.PreferenceActivity;
@@ -16,6 +17,16 @@ public  class IntentOpenerService {
         }
         ctx.startActivity(intent);
     }
+
+    public static void OpenAProposActivity(Context ctx,Boolean RemoveFromBackStack){
+        Intent intent = new Intent(ctx, AProposActivity.class);
+        if (RemoveFromBackStack){
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        }
+        ctx.startActivity(intent);
+    }
+
+
 
     public static void OpenPreferenceActivity(Context ctx,Boolean RemoveFromBackStack){
         Intent intent = new Intent(ctx, PreferenceActivity.class);

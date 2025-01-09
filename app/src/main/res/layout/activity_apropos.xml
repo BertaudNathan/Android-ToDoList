@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/activity_apropos"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteY="733dp">
+
+        <ImageView
+            android:id="@+id/iconAPropos"
+            android:layout_width="match_parent"
+            android:layout_height="267dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icon" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="209dp"
+            android:text="Cette application est une aplication servant a créer sa liste de taches. On peut se créer un compte puis se connecter. On a ensuite acces a une interface permettant de créer ses taches,
+             avec un texte et une date, une page pour les options de l'application, où on peut gerer le theme,
+              les notifications vers discord ou encore la synchronisation avec notion.
+               L'ajout de tache est notifié sur un serveur discord, mais est egalement synchronisé avec
+                une to do list notion, si une clé API et un lien de base de donnée sont renseignés dans
+                 les préferences."
+            android:textAlignment="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iconAPropos" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="257dp"
+            android:autoLink="web"
+            android:text="Lien du serveur discord pour les notifications : https://discord.gg/Br8w6ZR9"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            app:layout_constraintVertical_bias="0.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

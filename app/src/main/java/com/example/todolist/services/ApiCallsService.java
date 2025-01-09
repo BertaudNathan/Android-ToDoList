@@ -61,8 +61,8 @@ public class ApiCallsService   {
         }
 
         String notionApiUrl = "https://api.notion.com/v1/pages";
-        String databaseId = pref.getString("cleApiNotion", "");
-        String token = pref.getString("lienNotion", "");
+        String databaseId = pref.getString("lienNotion", "");
+        String token = "Bearer "+pref.getString("cleApiNotion", "");
 
         Handler handler = new Handler(Looper.getMainLooper()); // Ensure Toast runs on the main thread
 

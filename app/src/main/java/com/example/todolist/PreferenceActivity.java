@@ -1,6 +1,7 @@
 package com.example.todolist;
 
 import android.os.Bundle;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -17,6 +18,7 @@ public class PreferenceActivity extends MyCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_preference);
         if (savedInstanceState == null) {
             getSupportFragmentManager()
