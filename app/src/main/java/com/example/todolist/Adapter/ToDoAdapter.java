@@ -32,7 +32,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
 
     public ToDoAdapter(MainActivity activity) {
         this.activity = activity;
-        firebaseService = new FirebaseService(activity);
+        firebaseService = FirebaseService.getInstance(activity);
     }
 
 

@@ -23,6 +23,7 @@ import com.devmobile.todolistBertaudLeroi.R;
 import com.example.todolist.Model.ToDoModel;
 import com.example.todolist.Utils.DataBaseHelper;
 import com.example.todolist.services.FirebaseService;
+import com.example.todolist.services.NotificationService;
 import com.example.todolist.ui.Modale.CustomCalendarDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -40,6 +41,8 @@ public class AddNewTask extends BottomSheetDialogFragment {
     private Button mSaveButton;
     private Button buttonCalendar;
     private TextView textViewDate;
+    public Context context;
+
 
 
     public static AddNewTask newInstance() {
@@ -61,6 +64,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
         mSaveButton = view.findViewById(R.id.addButton);
         buttonCalendar = view.findViewById(R.id.buttonCalendar);
         textViewDate = view.findViewById(R.id.textViewDate);
+        context = this.getContext();
 
         boolean isUpdate = false;
 
@@ -102,7 +106,8 @@ public class AddNewTask extends BottomSheetDialogFragment {
                     return;
                 }
                 String date = textViewDate.getText().toString();
-                FirebaseService fbs = new FirebaseService(getContext());
+                FirebaseService fbs =  FirebaseService.getInstance(getContext());
+
                 if(finalIsUpdate) {
                     Log.d(TAG, "onClick: ");
                     fbs.getTask(bundle.getString("Id"), new FirebaseService.OnTaskCompleteListener() {
@@ -110,6 +115,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
                         public void onSuccess(ToDoModel task) {
                             fbs.updateTask(task, text, date);
                             sendDiscordWebhook("Tâche mise à jour : " + text + " (Date : " + date + ")");
+                            NotificationService.SendNotification("Tâche mise à jour",text,context);
                             dismiss();
                         }
 
@@ -130,6 +136,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
                     }
                     fbs.addTask(item);
                     sendDiscordWebhook("Nouvelle tâche ajoutée : " + text + " (Date : " + (date.isEmpty() ? "Non spécifiée" : date) + ")");
+                    NotificationService.SendNotification("Nouvelle tache",text,context);
                 }
 
 

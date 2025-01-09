@@ -40,7 +40,7 @@ public class LogInFragment extends Fragment {
 
     public void LogIn_Click(View view){
         Log.d("ezdzfzfz", "LogIn_Click: erzefzefezzef");
-        FirebaseService fbs = new FirebaseService(this.getContext());
+        FirebaseService fbs = FirebaseService.getInstance(this.getContext());
         TextView email =  binding.editTextTextEmailAddress;
         TextView pwd =  binding.editTextTextPassword;
         if (email.getText().toString().isEmpty() || pwd.getText().toString().isEmpty()){
