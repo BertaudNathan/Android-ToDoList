@@ -8,7 +8,7 @@
 - [ ] **Utilisation de Room**
 - [X] **Utilisation de Firebase**
 - [X] **Nombre d'activités ou fragments supérieur ou égal à 3**
-- [ ] **Gestion du bouton Back**
+- [X] **Gestion du bouton Back**
   - Affichage d'un message pour confirmer que l'on veut réellement quitter l'application.
 - [X] **Affichage d'une liste avec son adapter**
 - [X] **Affichage d'une liste avec un custom adapter**
