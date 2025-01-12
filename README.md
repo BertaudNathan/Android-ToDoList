@@ -1,5 +1,10 @@
 # Android-ToDoList
 
+
+## Lien du serveur discord pour l'appel webservice Discord : https://discord.gg/q2W4gu2H79
+
+## Pour le fonctionnement des appels API, penser à activer les notifications Discord, ainsi que la synchronisation Notion en renseignant le lien de la base de donnée et votre clé api notion.
+
 Liste des fonctionnalités implémentées :
 - [X] Utilisation de l'Api Preference
 - [X] Ecriture/lecture dans un Fichier
@@ -16,6 +21,7 @@ Liste des fonctionnalités implémentées :
 - [X] Les taches en background (codage du démarrage d'un thread) : Synchronisation avec Notion, notifications et notification discord
 - [X] Le codage d'un menu (contextuel ou non, utilisation d'un menu en resource XML) : menu lateral
 - [X] L'application de pattern (Reactive programming, singleton, MVC,...) Liste : Singleton (FirebaseService)
+- [X] Appels de webservices : Discord et Notion
 - [X] Autorisation android et demande d'autorisation dans l'application : Notification.
 - [X] Gestion des preferences : 
     - theme light/dark/system
