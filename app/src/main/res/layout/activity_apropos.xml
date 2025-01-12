@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="257dp"
             android:autoLink="web"
-            android:text="Lien du serveur discord pour les notifications : https://discord.gg/Br8w6ZR9"
+            android:text="Lien du serveur discord pour les notifications : https://discord.gg/q2W4gu2H79"
             android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
